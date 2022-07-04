@@ -1,0 +1,198 @@
+*{
+    margin: 0px;
+    padding: 0px;
+}
+
+body{
+    background-color: rgb(249, 248, 253);
+    color: rgb(92, 92, 92);
+}
+
+.page-item.active .page-link {
+    background-color: rgb(0, 88, 171);
+    border-color: rgb(0, 88, 171);
+}
+.page-link:hover {
+    background-color: rgb(243, 243, 208);
+    color: rgb(133, 133, 100);
+}
+.page-link {
+    color: rgb(0, 88, 171);
+}
+
+#frm fieldset>legend {
+    color: #8d8b6d!important;
+}
+
+.dataTables_length {
+    display:  none;
+}
+
+.dataTables_filter {
+    display:  none;
+}
+ 
+
+.naveg{
+    position: relative;
+    width: 100%;
+}
+
+.img{
+    width: 100%;
+    height: 100%;
+}
+
+.color-primario{
+    background-color: rgb(0, 88, 171);
+    color: #fff;
+}
+button.color-primario:hover{
+    background-color: rgb(1, 73, 141);
+    color: rgb(255, 255, 255);
+}
+
+.color-secundario{
+    background-color: #f9f8fd;
+    color: rgb(92, 92, 92);
+}
+button.color-secundario:hover{
+    background-color: #ececec;
+    color: rgb(92, 92, 92);
+}
+
+.colorText{
+    color: rgb(92, 92, 92); 
+}
+.warningColor{
+    background-color: rgb(243, 243, 208);
+    color: rgb(133, 133, 100);
+}
+
+.alerta{
+    padding: 6px;
+    border-radius: 3px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    -ms-border-radius: 3px;
+    -o-border-radius: 3px;
+}
+
+.login{
+    background-color: rgba(238, 238, 238, 0);
+    border-radius: 16px;
+    -webkit-border-radius: 16px;
+    -moz-border-radius: 16px;
+    -ms-border-radius: 16px;
+    -o-border-radius: 16px;
+}
+
+/* Clases para las Sweet Alerts Toastr */
+.colored-toast.swal2-icon-success {
+
+    padding: 8px !important;
+    background-color: #e5ebe7 !important;
+    box-shadow: 0px 0px 0px #000000 !important;
+}
+  
+.colored-toast.swal2-icon-error {
+
+    padding: 8px !important;
+    background-color: #f27474 !important;
+    box-shadow: 0px 0px 0px #000000 !important;
+}
+  
+.colored-toast.swal2-icon-warning {
+
+    padding: 8px !important;
+    background-color: rgb(243, 243, 208) !important;
+	box-shadow: 0px 0px 0px #000000 !important;
+}
+  
+.colored-toast.swal2-icon-info {
+
+    padding: 8px !important;
+    background-color: #3fc3ee !important;
+	box-shadow: 0px 0px 0px #000000 !important;
+}
+  
+.colored-toast.swal2-icon-question {
+
+    padding: 8px !important;
+    background-color: #87adbd !important;
+	box-shadow: 0px 0px 0px #000000 !important;
+}
+  
+.colored-toast .swal2-title {
+    color: rgb(61, 61, 61);
+}
+  
+.colored-toast .swal2-close {
+    color: rgb(61, 61, 61);
+}
+  
+.colored-toast .swal2-html-container {
+    color: white;
+}
+
+td{
+    font-weight: bold;
+    color: rgb(92, 92, 92);
+}
+
+/* Clases para los badges */
+.colorDark{
+    background-color: rgb(52, 58, 64);
+    color: rgb(233, 233, 233);
+}
+
+.colorYellow{
+    background-color: rgb(230, 225, 159);
+    color: rgb(95, 90, 35);
+}
+
+.colorGreen{
+    background-color: rgb(176, 211, 188);
+    color: rgb(81, 99, 87) ;
+}
+
+.colorGray{
+    background-color: rgb(201, 210, 218);
+    color: rgb(90, 96, 102);
+}
+
+.colorRed{
+    background-color: rgb(238, 209, 211);
+    color:rgb(172, 42, 51);
+}
+
+.colorBlue{
+    background-color: rgb(161, 206, 212);
+    color: rgb(86, 112, 117);   
+}
+
+.modal-style{
+    border: 0px;
+    border-radius: 6px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    box-shadow: 0px;
+}
+
+.header-modal{
+    background-color: rgb(0, 88, 171);
+    color: rgb(243, 243, 243);
+}
+
+@media (max-width: 476px){
+    
+    .hidden-letters{display: none;}
+    .size-text{font-size: 17px;}
+}
+
+@media (max-width: 476px){
+    
+    .titulo{font-size: 17px;}
+}
