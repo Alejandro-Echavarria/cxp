@@ -5,7 +5,7 @@
 	<meta charset="UTF-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<meta name="theme-color" content="#f9f8fd">
+	<meta name="theme-color" content="#212529f8">
 	<meta name="author" content="Manuel Echavarria">
 	<title><?= $titulo ?> - CxP</title>
 	<link rel="shortcut icon" type="image/x-icon" href="<?= base_url(); ?>/dist/img/favicon.ico">
@@ -18,7 +18,7 @@
 	<link rel="stylesheet" href="<?= base_url(); ?>/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
 	<link rel="stylesheet" href="<?= base_url(); ?>/dist/css/styleDataTableBoostrapResponsive.css">
 	<!-- Select picker -->
-	<link rel="stylesheet" href="<?= base_url(); ?>/plugins/bootstrap-select-1.13.14/dist/css/bootstrap-select.min.css">
+	<link rel="stylesheet" href="<?= base_url(); ?>/plugins/bootstrap-select-1.14.0-beta2/dist/css/bootstrap-select.min.css">
 	<!-- My custom css -->
 	<link rel="stylesheet" href="<?= base_url() ?>/dist/css/style.css">
 	<!-- Dashboard css -->

@@ -3,21 +3,35 @@
     padding: 0px;
 }
 
+.personal-border{
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+    -moz-border-radius: 8px;
+    -ms-border-radius: 8px;
+    -o-border-radius: 8px;
+}
+
 body{
-    background-color: rgb(249, 248, 253);
+    background-color: #f8f9fa;
     color: rgb(92, 92, 92);
 }
 
+.color-fondo{
+    background-color: #f8f9fa;
+}
+
 .page-item.active .page-link {
-    background-color: rgb(0, 88, 171);
-    border-color: rgb(0, 88, 171);
+    background-color: rgb(211, 231, 255);
+    border-color: rgb(204, 226, 253);
+    color: #2470dc;
+    font-weight: bold;
 }
 .page-link:hover {
-    background-color: rgb(243, 243, 208);
-    color: rgb(133, 133, 100);
+    background-color: #2470dc;
+    color: #727272;
 }
 .page-link {
-    color: rgb(0, 88, 171);
+    color: #2470dc;
 }
 
 #frm fieldset>legend {
@@ -44,11 +58,11 @@ body{
 }
 
 .color-primario{
-    background-color: rgb(0, 88, 171);
+    background-color: #212529f8;
     color: #fff;
 }
 button.color-primario:hover{
-    background-color: rgb(1, 73, 141);
+    background-color: #212529e5;
     color: rgb(255, 255, 255);
 }
 
@@ -184,6 +198,37 @@ td{
 .header-modal{
     background-color: rgb(0, 88, 171);
     color: rgb(243, 243, 243);
+}
+
+#tabla_Home_info{
+    font-weight: bold;
+}
+
+table.dataTable > thead .sorting:before,
+table.dataTable > thead .sorting_asc:before,
+table.dataTable > thead .sorting_desc:before,
+table.dataTable > thead .sorting_asc_disabled:before,
+table.dataTable > thead .sorting_desc_disabled:before {
+    right: 1em;
+    content: "▴";
+}
+
+table.dataTable > thead .sorting:after,
+table.dataTable > thead .sorting_asc:after,
+table.dataTable > thead .sorting_desc:after,
+table.dataTable > thead .sorting_asc_disabled:after,
+table.dataTable > thead .sorting_desc_disabled:after {
+  right: 0.5em;
+  content: "▾";
+}
+
+tbody tr:hover{
+    background-color: rgb(211, 231, 255);
+    transition: 300ms;
+    -webkit-transition: 300ms;
+    -moz-transition: 300ms;
+    -ms-transition: 300ms;
+    -o-transition: 300ms;
 }
 
 @media (max-width: 476px){
