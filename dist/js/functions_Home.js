@@ -56,57 +56,78 @@ $(document).ready(function () {
   jQuery(".dataTables_paginate").appendTo(jQuery("#pagination_pagination"));
 
   // Validations and information manangement of the form
-  // var form = document.querySelector("#form" + controlador + "");
+  const form = document.querySelector("#form" + controlador + "");
 
-  // form.onsubmit = function (e) {
-  //   e.preventDefault();
-  //   var strDecripcion = document.querySelector("#txtDescripcionEmpaque").value;
-  //   var intUnidades = document.querySelector("#intUnidades").value;
+  form.onsubmit = function (e) {
+    
+    e.preventDefault();
 
-  //   if (strDecripcion == "" || intUnidades == "") {
-  //     Swal.fire({
-  //       icon: "error",
-  //       title: "Error",
-  //       text: "Todos los campos son obligatorios",
-  //       confirmButtonText: "Entendido",
-  //       confirmButtonColor: "#aea322",
-  //     });
+    let intCedula = document.querySelector("#cedula").value;
+    let strNombre = document.querySelector("#nombre").value;
+    let strTipo = document.querySelector("#tipo").value;
+    let intEstado = document.querySelector("#estado").value;
 
-  //     return false;
-  //   }
+    if (intCedula === "" || strNombre === "" || strTipo === "" || intEstado === "") {
+      Swal.fire({
+        icon: "error",
+        title: "Error",
+        text: "Todos los campos son obligatorios",
+        confirmButtonText: "Entendido",
+        confirmButtonColor: "#aea322",
+      });
 
-  //   // var request = window.XMLHttpRequest
-  //   //   ? new XMLHttpRequest()
-  //   //   : new ActiveXObject("Microsoft.XMLHTTP");
-  //   // var ajaxUrl = base_url + "/" + controlador + "/insert";
-  //   // var formData = new FormData(form);
-  //   // request.open("POST", ajaxUrl, true);
-  //   // request.send(formData);
+      return false;
+    }
 
-  //   // request.onreadystatechange = function () {
-  //   //   if (request.readyState == 4 && request.status == 200) {
-  //   //     var objData = JSON.parse(request.responseText);
-  //   //     if (objData.status) {
-  //   //       $(modalNombreControlador).modal("hide");
-  //   //       form.reset();
-  //   //       Swal.fire({
-  //   //         icon: "success",
-  //   //         title: "Empaques",
-  //   //         text: objData.msg,
-  //   //         confirmButtonText: "Entendido",
-  //   //         confirmButtonColor: "#aea322",
-  //   //       });
-  //   //       DataTableAc.api().ajax.reload();
-  //   //     } else {
-  //   //       Swal.fire({
-  //   //         icon: "error",
-  //   //         title: "Error",
-  //   //         text: objData.msg,
-  //   //         confirmButtonText: "Entendido",
-  //   //         confirmButtonColor: "#aea322",
-  //   //       });
-  //   //     }
-  //   //   }
-  //   // };
-  // };
+    let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+    let ajaxUrl = base_url + "/" + controlador + "/store";
+    let formData = new FormData(form);
+    request.open("POST", ajaxUrl, true);
+    request.send(formData);
+
+    request.onreadystatechange = function () {
+      if (request.readyState == 4 && request.status == 200) {
+        const objData = JSON.parse(request.responseText);
+        if (objData.status) {
+          $(modalNombreControlador).modal("hide");
+          form.reset();
+          Swal.fire({
+            icon: "success",
+            title: "Proveedores",
+            text: objData.msg,
+            confirmButtonText: "Entendido",
+            confirmButtonColor: "#aea322",
+          });
+          DataTableAc.api().ajax.reload();
+        }else {
+            
+          const errorCedula = objData.validations.cedula ? objData.validations.cedula : ""
+          const errorNombre = objData.validations.nombre ? objData.validations.nombre : ""
+
+          Swal.fire({
+            icon: "error",
+            title: "Error",
+            text: objData.validations ? errorCedula + " " + errorNombre : objData.msg,
+            confirmButtonText: "Entendido",
+            confirmButtonColor: "#aea322",
+          });
+        }
+      }
+    };
+  };
 });
+
+function openModal(){
+    
+  document.querySelector('#id').value ="";//Limpiamos el input id **Muy importante
+  document.querySelector('#btnText').innerHTML = "Guardar";
+  document.querySelector('#titleModal').innerHTML = "Nuevo proveedor";
+  document.querySelector("#form"+controlador+"").reset();//Limpiamos Todos los campos
+
+  $('#listStatus').selectpicker('render');
+
+  const modal = document.getElementById(modalNombreControlador);
+  // modal.modal('show');
+  $(modalNombreControlador).modal('show');
+
+}

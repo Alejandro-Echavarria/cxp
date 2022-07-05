@@ -22,6 +22,6 @@
         protected $createdField  = '';
         protected $updatedField  = '';
         protected $deletedField  = '';
-
+        
     }
 ?>

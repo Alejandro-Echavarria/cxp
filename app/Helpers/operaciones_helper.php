@@ -19,7 +19,7 @@
         require_once $view_modal;
     }
 
-        //Eliminar exceso de espacios entre palabras
+    //Eliminar exceso de espacios entre palabras
     function strClean($strCadena){
         $string = preg_replace(['/\s+/','/^\s|\s$/'],[' ',''], $strCadena);
         $string = trim($string); //Elimina espacios en blanco al inicio y al final

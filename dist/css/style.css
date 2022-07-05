@@ -27,11 +27,12 @@ body{
     font-weight: bold;
 }
 .page-link:hover {
-    background-color: #2470dc;
-    color: #727272;
+    background-color: rgb(211, 231, 255);
+    border-color: rgb(204, 226, 253);
+    color: #2470dc;
 }
 .page-link {
-    color: #2470dc;
+    color: #727272;
 }
 
 #frm fieldset>legend {
@@ -73,6 +74,11 @@ button.color-primario:hover{
 button.color-secundario:hover{
     background-color: #ececec;
     color: rgb(92, 92, 92);
+}
+
+.details-color{
+    color: #2470dc;
+	background-color: rgb(211, 231, 255);
 }
 
 .colorText{
@@ -183,6 +189,43 @@ td{
 .colorBlue{
     background-color: rgb(161, 206, 212);
     color: rgb(86, 112, 117);   
+}
+
+/* Clases para los botones */
+/* Clases para los badges */
+.colorDark-boton, .colorDark-boton:hover, .colorDark-boton:focus{
+    background-color: rgb(52, 58, 64);
+    color: rgb(233, 233, 233);
+    border: none;
+}
+
+.colorYellow-boton, .colorYellow-boton:hover, .colorYellow-boton:focus{
+    background-color: rgb(230, 225, 159);
+    color: rgb(95, 90, 35);
+}
+
+.colorGreen-boton, .colorGreen-boton:hover, .colorGreen-boton:focus{
+    background-color: rgb(176, 211, 188);
+    color: rgb(81, 99, 87) ;
+    border: none;
+}
+
+.colorGray-boton,.colorGray-boton:hover, .colorGray-boton:focus {
+    background-color: rgb(212, 216, 219);
+    color: rgb(90, 93, 95);
+    border: none;
+}
+
+.colorRed-boton, .colorRed-boton:hover, .colorRed-boton:focus{
+    background-color: rgb(238, 209, 211);
+    color:rgb(172, 42, 51);
+    border: none;
+}
+
+.colorBlue-boton, .colorBlue-boton:hover, .colorBlue-boton:focus{
+    background-color: rgb(211, 231, 255);
+    color: #2470dc;
+    border: none;
 }
 
 .modal-style{

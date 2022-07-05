@@ -36,8 +36,27 @@ class Validation
         'list'   => 'CodeIgniter\Validation\Views\list',
         'single' => 'CodeIgniter\Validation\Views\single',
     ];
-
+    
     //--------------------------------------------------------------------
     // Rules
     //--------------------------------------------------------------------
+    
+    public $cedula = [
+        'cedula' => [
+            'rules' => 'required|is_unique[proveedores.cedula]|max_length[11]|min_length[11]',
+            'errors' => [
+                'required' => 'El campo cédula es obligatorio.',
+                'is_unique' => 'Ya existe un proveedor con esta cédula, favor dígita otra.',
+                'max_length' => 'Cédula invalida.',
+                'min_length' => 'Cédula invalida.'
+            ]
+        ],
+        'nombre' => [
+            'rules' => 'required|is_unique[proveedores.nombre]',
+            'errors' => [
+                'required' => 'El campo nombre es obligatorio.',
+                'is_unique' => 'Ya existe un proveedor con este nombre.'
+            ]
+        ]
+    ];
 }

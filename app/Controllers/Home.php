@@ -14,6 +14,8 @@
             $this->controlador  = 'Home';
             $this->javaScript = 'functions_'.$this->controlador.'.js';
             $this->proveedores = new ProveedoresModel();
+            $this->validation = \Config\Services::validation();
+
         }
         /**
          * This function is the main function that is called when the user goes to the home page
@@ -34,29 +36,79 @@
 
         public function getRecordSet() {
 
-            $arrData = $this->proveedores->findAll();
-
+            $arrData = $this->proveedores->orderBy("id","desc")->findAll();
+            
             for ($i = 0; $i < count($arrData); $i++) {
                 
+                $arrData[$i]["fecha_registro"] = date("d-m-Y - h:i:s a", strtotime($arrData[$i]["fecha_registro"]));
                 // Variables para los botones
                 $btnView = '';
                 $btnEdit = '';
-
 
                 //Mediante este if le indicamos que si el array en el que estamos, en su 'status' es igual a 1, entonces,
                 // Que cambie ese valor por el que le indicamos del badget, de lo contrario, que use el otro
                 if ($arrData[$i]['estado'] == '1') {
                     
-                    $arrData[$i]['status_transaccion'] = '<span class="badge colorGreen">Activo</span>';
+                    $arrData[$i]['estado'] = '<span class="badge colorGreen">Activo</span>';
                 } else {
-                    $arrData[$i]['status_transaccion'] = '<span class="badge colorRed">Inactivo</span>';
+                    $arrData[$i]['estado'] = '<span class="badge colorRed">Inactivo</span>';
                 }
+
+                $btnView = '<button type="button" class="btn btn-sm colorBlue-boton border-0" title="Ver" onClick="fntView('. $arrData[$i]['id'] .')" ><i class="fa-solid fa-eye" data-toggle="tooltip"></i></button>';
+                        
+                $btnEdit = '<button type="button" class="btn btn-sm colorGray-boton border-0" title="Editar" onClick="fntEdit('. $arrData[$i]['id'] .')" ><i class="fas fa-pencil-alt" data-toggle="tooltip"></i></button>';
 
                 $arrData[$i]['options'] = '<div clas="text-center">'. $btnView . ' ' . $btnEdit . '</div>';
             };
 
             header('Content-Type: application/json');
             echo json_encode($arrData, JSON_UNESCAPED_UNICODE);
+            die();
+        }
+
+        public function store(){
+
+            if ($this->request->getMethod() == "post" && $this->validate('cedula')) {
+                
+                $id = intval(strClean($this->request->getPost('id')));
+                $intCedula = intval(strClean($this->request->getPost('cedula')));
+                $strNombre = strClean($this->request->getPost('nombre'));
+                $strTipo = strClean($this->request->getPost('tipo'));
+                $intEstado = intval(strClean($this->request->getPost('estado')));
+                $requestData = 0;
+
+                if (empty($intCedula) || empty($strNombre) || empty($strTipo) ||
+                    empty($intEstado)) {
+                    
+                    $arrResponse = array("status" => false, "msg" => 'Datos incorrectos');
+                }else{
+
+                    if ($id == 0) {
+                        
+                        $option = 1;
+                        $requestData = $this->proveedores->save(['cedula' => $intCedula,
+                                                           'nombre' => $strNombre,
+                                                           'tipo' => $strTipo,
+                                                           'estado' => $intEstado
+                                                         ]);
+                    }else{
+                        $option = 2;
+                    }
+                }
+
+                if ($requestData > 0) {
+     
+                    if ($option == 1 ) {
+                        
+                        $arrResponse = array("status" => true, "msg" => 'Datos guardados correctamente');
+                    }else{
+                        $arrResponse = array("status" => true, "msg" => 'Datos actualizados correctamente');                        
+                    }
+                }
+            }else{
+                $arrResponse = array("status" => false, "msg" => 'Error', 'validations' => $this->validation->getErrors()); 
+            }
+            echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
             die();
         }
     }

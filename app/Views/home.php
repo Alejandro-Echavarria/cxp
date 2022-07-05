@@ -1,3 +1,6 @@
+<?php
+    getModal($controlador);
+?>
 <div class="container-fluid">
 	<div class="row">
 		<main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
@@ -26,16 +29,16 @@
 					</div>
 				</div>
 				<div class="table-responsive color-fondo my-4">
-					<table style="width: 100%;" class="display nowrap no-footer table table-hover table-borderless" cellspacing="0" id="tabla_<?= $controlador ?>">
+					<table style="width: 100%;" class="display nowrap no-footer table table-sm table-hover table-borderless" cellspacing="0" id="tabla_<?= $controlador ?>">
 						<thead>
 							<tr class="text-bold">
 								<th style="width: 10%;">#</th>
-								<th style="width: 25%;">Nombre</th>
-								<th style="width: 30%;">Descripci&oacute;n</th>
-								<th style="width: 14%;">Estado</th>
-								<th style="width: 14%;">Estado</th>
-								<th style="width: 14%;">Estado</th>
-								<th style="width: 14%;">Estado</th>
+								<th style="width: 10%;">C&eacute;dula</th>
+								<th style="width: 20%;">Nombre</th>
+								<th style="width: 10%;">Tipo</th>
+								<th style="width: 10%;">Blanace</th>
+								<th style="width: 10%;">Estado</th>
+								<th style="width: 20%;">Fecha</th>
 								<th style="width: 11%;">Opciones</th>
 							</tr>
 						</thead>
