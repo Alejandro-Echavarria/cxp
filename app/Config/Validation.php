@@ -52,7 +52,7 @@ class Validation
             ]
         ],
         'nombre' => [
-            'rules' => 'required|is_unique[proveedores.nombre,nombre,{nombre}]',
+            'rules' => 'required|is_unique[proveedores.nombre,id,{id}]',
             'errors' => [
                 'required' => 'El campo nombre es obligatorio.',
                 'is_unique' => 'Ya existe un proveedor con este nombre.'

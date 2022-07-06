@@ -2,6 +2,14 @@ const modalNombreControlador = "#" + controlador;
 const tablaNombreControlador = "#tabla_" + controlador;
 var DataTableAc;
 
+const swalCustom = Swal.mixin({
+  customClass: {
+    confirmButton: 'btn colorBlue-boton fw-bold m-1',
+    cancelButton: 'btn colorDark-boton fw-bold'
+  },
+  buttonsStyling: false
+})
+
 $(document).ready(function () {
 
   DataTableAc = $(tablaNombreControlador).dataTable({
@@ -68,11 +76,11 @@ $(document).ready(function () {
     let strTipo = document.querySelector("#tipo").value;
 
     if (intCedula === "" || strNombre === "" || strTipo === "") {
-      Swal.fire({
+      swalCustom.fire({
         icon: "error",
         title: "Error",
         text: "Todos los campos son obligatorios",
-        confirmButtonText: "Entendido",
+        confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
         confirmButtonColor: "#aea322",
       });
 
@@ -91,11 +99,11 @@ $(document).ready(function () {
         if (objData.status) {
           $(modalNombreControlador).modal("hide");
           form.reset();
-          Swal.fire({
+          swalCustom.fire({
             icon: "success",
             title: "Proveedores",
             text: objData.msg,
-            confirmButtonText: "Entendido",
+            confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
             confirmButtonColor: "#aea322",
           });
           DataTableAc.api().ajax.reload();
@@ -104,11 +112,11 @@ $(document).ready(function () {
           let errorCedula = objData.validations.hasOwnProperty('cedula') ? objData.validations.cedula : ""
           let errorNombre = objData.validations.hasOwnProperty('nombre') ? objData.validations.nombre : ""
           
-          Swal.fire({
+          swalCustom.fire({
             icon: "error",
             title: "Error",
             text: objData.validations ? errorCedula + " " + errorNombre : objData.msg,
-            confirmButtonText: "Entendido",
+            confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
             confirmButtonColor: "#aea322",
           });
         }
@@ -159,14 +167,6 @@ function fntEdit(id) {
 function fntDelete(id){
    
   const id_pro = id;
-
-  const swalCustom = Swal.mixin({
-    customClass: {
-      confirmButton: 'btn colorBlue-boton fw-bold m-1',
-      cancelButton: 'btn colorDark-boton fw-bold'
-    },
-    buttonsStyling: false
-  })
 
   //Configuracion de la alerta
   swalCustom.fire({
@@ -224,7 +224,8 @@ function openModal(){
   document.querySelector('#titleModal').innerHTML = "Nuevo proveedor";
   document.querySelector("#form"+controlador+"").reset();//Limpiamos Todos los campos
 
-  $('#estado').selectpicker('refresh');
+  $("#estado").selectpicker("refresh");
+  $("#tipo").selectpicker("refresh");
 
   var modal = new bootstrap.Modal(document.querySelector(modalNombreControlador));
   modal.show();
