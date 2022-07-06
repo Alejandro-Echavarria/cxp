@@ -36,7 +36,7 @@
 
         public function getRecordSet() {
 
-            $arrData = $this->proveedores->orderBy("id","desc")->findAll();
+            $arrData = $this->proveedores->orderBy("id","desc")->where("estado != 0")->findAll();
             
             for ($i = 0; $i < count($arrData); $i++) {
                 
@@ -44,6 +44,7 @@
                 // Variables para los botones
                 $btnView = '';
                 $btnEdit = '';
+                $btnDelete = '';
 
                 //Mediante este if le indicamos que si el array en el que estamos, en su 'status' es igual a 1, entonces,
                 // Que cambie ese valor por el que le indicamos del badget, de lo contrario, que use el otro
@@ -58,7 +59,9 @@
                         
                 $btnEdit = '<button type="button" class="btn btn-sm colorGray-boton border-0" title="Editar" onClick="fntEdit('. $arrData[$i]['id'] .')" ><i class="fas fa-pencil-alt" data-toggle="tooltip"></i></button>';
 
-                $arrData[$i]['options'] = '<div clas="text-center">'. $btnView . ' ' . $btnEdit . '</div>';
+                $btnDelete = '<button type="button" class="btn btn-sm colorRed-boton" title="Eliminar" onClick="fntDelete('. $arrData[$i]['id'] .')" ><i class="fas fa-trash-alt" data-toggle="tooltip"></i></button>';
+
+                $arrData[$i]['options'] = '<div clas="text-center">'. $btnView . ' ' . $btnEdit . ' ' . $btnDelete . '</div>';
             };
 
             header('Content-Type: application/json');
@@ -74,13 +77,15 @@
                 $intCedula = intval(strClean($this->request->getPost('cedula')));
                 $strNombre = strClean($this->request->getPost('nombre'));
                 $strTipo = strClean($this->request->getPost('tipo'));
-                $intEstado = intval(strClean($this->request->getPost('estado')));
+                $intEstado = intval($this->request->getPost('estado'));
                 $requestData = 0;
 
                 if (empty($intCedula) || empty($strNombre) || empty($strTipo) ||
                     empty($intEstado)) {
                     
-                    $arrResponse = array("status" => false, "msg" => 'Datos incorrectos');
+                    $arrResponse = array("status" => false, "msg" => 'Datos incorrectos', 'validations' => "");
+                    echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+                    die();
                 }else{
 
                     if ($id == 0) {
@@ -93,6 +98,12 @@
                                                          ]);
                     }else{
                         $option = 2;
+                        $requestData = $this->proveedores->save(['id' => $id,
+                                                                 'cedula' => $intCedula,
+                                                                 'nombre' => $strNombre,
+                                                                 'tipo' => $strTipo,
+                                                                 'estado' => $intEstado
+                                                            ]);
                     }
                 }
 
@@ -106,9 +117,56 @@
                     }
                 }
             }else{
-                $arrResponse = array("status" => false, "msg" => 'Error', 'validations' => $this->validation->getErrors()); 
+                $arrResponse = array("status" => false, "msg" => 'Error', 'validations' => $this->validation->getErrors() ? $this->validation->getErrors() : ""); 
             }
             echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+            die();
+        }
+
+        public function show() {
+            
+            $id = intval(strClean($this->request->getVar('id')));
+            if ($id > 0) {
+    
+                $arrData = $this->proveedores->find($id);
+                if (empty($arrData)) {
+                    
+                    $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+                }else{
+                    $arrResponse = array('status' => true, 'data' => $arrData);
+                }
+                
+                header('Content-Type: application/json');
+                echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+            }
+            die();
+        }
+
+        public function delete(){
+
+            if ($this->request->getMethod() == "post") {
+
+                $id = intval(strClean($this->request->getPost('id')));
+
+                    if (empty($id)) {
+                        
+                        $arrResponse = array("status" => false, "msg" => 'Datos incorrectos');
+                    }else{
+
+                        $requestDelete = $this->proveedores->find($id,'id');
+                        
+                        if ($requestDelete['balance'] == 0) {
+
+                            // modificamso el status a 0, el sistema con esto entiende que está eliminado
+                            $requestData = $this->proveedores->update($id, ['estado'=>intval(0)]);
+                            $arrResponse = array('status' => true, 'msg' => 'Se ha eliminado la categoría para los artículos');
+                        }else{
+                            $arrResponse = array('status' => false, 'msg' => 'No se puede borrar un proveedor con monto mayor a cero');
+                        }
+                        // $arrResponse = array('status' => false, 'msg' => 'Error al eliminar un proveedor');
+                    }
+                echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+            }
             die();
         }
     }

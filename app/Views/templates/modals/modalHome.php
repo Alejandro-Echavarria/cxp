@@ -27,9 +27,9 @@
                         </div>
                         <div class="col-md-6">
                             <label for="estado" class="form-label fw-bold">Estado <span class="text-danger">*</span></label>
-                            <select id="estado" name="estado" class="form-control selectpicker">
+                            <select class="form-control selectpicker" id="estado" name="estado" >
                                 <option value="1">Activo</option>
-                                <option value="0">Inactivo</option>
+                                <option value="2">Inactivo</option>
                             </select>
                         </div>
                     </div>

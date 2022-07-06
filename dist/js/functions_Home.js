@@ -1,9 +1,10 @@
 const modalNombreControlador = "#" + controlador;
 const tablaNombreControlador = "#tabla_" + controlador;
+var DataTableAc;
 
 $(document).ready(function () {
 
-  const DataTableAc = $(tablaNombreControlador).dataTable({
+  DataTableAc = $(tablaNombreControlador).dataTable({
     language: {
       infoEmpty: "Mostrando del 0 al 0 de un total de 0 registros",
       info: "Mostrando del _START_ al _END_ de _TOTAL_ registros",
@@ -65,9 +66,8 @@ $(document).ready(function () {
     let intCedula = document.querySelector("#cedula").value;
     let strNombre = document.querySelector("#nombre").value;
     let strTipo = document.querySelector("#tipo").value;
-    let intEstado = document.querySelector("#estado").value;
 
-    if (intCedula === "" || strNombre === "" || strTipo === "" || intEstado === "") {
+    if (intCedula === "" || strNombre === "" || strTipo === "") {
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -100,10 +100,10 @@ $(document).ready(function () {
           });
           DataTableAc.api().ajax.reload();
         }else {
-            
-          const errorCedula = objData.validations.cedula ? objData.validations.cedula : ""
-          const errorNombre = objData.validations.nombre ? objData.validations.nombre : ""
 
+          let errorCedula = objData.validations.hasOwnProperty('cedula') ? objData.validations.cedula : ""
+          let errorNombre = objData.validations.hasOwnProperty('nombre') ? objData.validations.nombre : ""
+          
           Swal.fire({
             icon: "error",
             title: "Error",
@@ -117,6 +117,106 @@ $(document).ready(function () {
   };
 });
 
+function fntEdit(id) {
+  //Apariencia del modal
+  document.querySelector("#titleModal").innerHTML = 'Actualizar proveedor';
+  document.querySelector("#btnActionForm").classList.replace("btn-primary", "btn-info");
+  document.querySelector("#btnText").innerHTML = "Actualizar";
+
+  let id_pro = id;
+  const request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+  const ajaxUrl = base_url + "/" + controlador + "/show?id=" + id_pro;
+  request.open("GET", ajaxUrl, true);
+  request.send();
+  request.onreadystatechange = function () {
+    if (request.readyState == 4 && request.status == 200) {
+      const objData = JSON.parse(request.responseText);
+      if (objData.status) {
+
+        //Si el status es verdadero entonces se van a colocar los datos en el fomrulario
+        document.querySelector("#id").value =objData.data.id;
+        document.querySelector("#cedula").value =objData.data.cedula;
+        document.querySelector("#nombre").value =objData.data.nombre;
+        document.querySelector("#tipo").value =objData.data.tipo;
+        document.querySelector("#estado").value =objData.data.estado;
+
+        if (objData.data.estado == 1) {
+          document.querySelector("#estado").value = 1;
+        } else {
+          if (objData.data.estado == 2) {
+            document.querySelector("#estado").value = 2;
+          }
+        }
+
+        $("#estado").selectpicker("refresh");
+        $("#tipo").selectpicker("refresh");
+      }
+    }
+    $(modalNombreControlador).modal("show");
+  };
+}
+
+function fntDelete(id){
+   
+  const id_pro = id;
+
+  const swalCustom = Swal.mixin({
+    customClass: {
+      confirmButton: 'btn colorBlue-boton fw-bold m-1',
+      cancelButton: 'btn colorDark-boton fw-bold'
+    },
+    buttonsStyling: false
+  })
+
+  //Configuracion de la alerta
+  swalCustom.fire({
+      icon: 'warning',
+      title: "Eliminar un proveedor",
+      text: "¿Realmente quieres eliminar este proveedor?",
+      type: "warning",
+      showCancelButton: true,
+      confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Si, eliminar",
+      cancelButtonText: "<i class='fa fa-fw fa-times-circle'></i> No, cancelar",
+      closeOnConfirm: false,
+      closeOnCancel: true
+
+  }).then((result) => {
+      //Script para eliminar
+      if (result.isConfirmed) {
+          
+        const request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+        const ajaxUrl = base_url+'/'+controlador+'/delete';
+        const strData = "id="+id_pro;
+        request.open("POST",ajaxUrl,true);
+        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");//Forma en la que se enviaran los datos
+        request.send(strData);
+        request.onreadystatechange = function(){
+          if (request.readyState == 4 && request.status == 200) {
+            const objData = JSON.parse(request.responseText);
+            if (objData.status){
+              swalCustom.fire({
+                icon: 'success',
+                title: 'Proveedores',
+                text: objData.msg,
+                confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+                confirmButtonColor: '#aea322'
+              });
+              DataTableAc.api().ajax.reload();
+            }else {
+              swalCustom.fire({
+                icon: 'error',
+                title: 'Error',
+                text: objData.msg,
+                confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+                confirmButtonColor: '#aea322'
+              });
+            }
+          }
+        }
+      }
+  });
+}
+
 function openModal(){
     
   document.querySelector('#id').value ="";//Limpiamos el input id **Muy importante
@@ -124,10 +224,10 @@ function openModal(){
   document.querySelector('#titleModal').innerHTML = "Nuevo proveedor";
   document.querySelector("#form"+controlador+"").reset();//Limpiamos Todos los campos
 
-  $('#listStatus').selectpicker('render');
+  $('#estado').selectpicker('refresh');
 
-  const modal = document.getElementById(modalNombreControlador);
-  // modal.modal('show');
-  $(modalNombreControlador).modal('show');
+  var modal = new bootstrap.Modal(document.querySelector(modalNombreControlador));
+  modal.show();
+  // $(modalNombreControlador).modal('show');
 
 }

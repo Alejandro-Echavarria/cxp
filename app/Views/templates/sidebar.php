@@ -10,13 +10,13 @@
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-break <?= strtolower(uri_string()) == "documento" ? "active" : "" ?> fw-bold" href="<?= base_url()?>/documento">
+                        <a class="nav-link text-break <?= strtolower(uri_string()) == "documento" ? "active" : "" ?> fw-bold" href="<?= base_url() ?>/documento">
                             <i class="fa-solid fa-file-lines"></i>
                             Documentos
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-break <?= strtolower(uri_string()) == "concepto" ? "active" : "" ?> fw-bold" href="#">
+                        <a class="nav-link text-break <?= strtolower(uri_string()) == "concepto" ? "active" : "" ?> fw-bold" href="<?= base_url() ?>/concepto">
                             <i class="fa-solid fa-sign-hanging"></i>
                             Conceptos
                         </a>

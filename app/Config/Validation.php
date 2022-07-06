@@ -43,16 +43,16 @@ class Validation
     
     public $cedula = [
         'cedula' => [
-            'rules' => 'required|is_unique[proveedores.cedula]|max_length[11]|min_length[11]',
+            'rules' => 'required|is_unique[proveedores.cedula,id,{id}]|max_length[11]|min_length[11]',
             'errors' => [
                 'required' => 'El campo cédula es obligatorio.',
                 'is_unique' => 'Ya existe un proveedor con esta cédula, favor dígita otra.',
-                'max_length' => 'Cédula invalida.',
-                'min_length' => 'Cédula invalida.'
+                'max_length' => 'Cédula invalida, excede el límite.',
+                'min_length' => 'Cédula invalida, le faltan dígitos.'
             ]
         ],
         'nombre' => [
-            'rules' => 'required|is_unique[proveedores.nombre]',
+            'rules' => 'required|is_unique[proveedores.nombre,nombre,{nombre}]',
             'errors' => [
                 'required' => 'El campo nombre es obligatorio.',
                 'is_unique' => 'Ya existe un proveedor con este nombre.'
