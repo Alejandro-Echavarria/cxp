@@ -37,12 +37,8 @@ $(document).ready(function () {
     },
     columns: [
       { data: "id" },
-      { data: "cedula" },
-      { data: "nombre" },
-      { data: "tipo" },
-      { data: "balance" },
+      { data: "descripcion" },
       { data: "estado" },
-      { data: "fecha_registro" },
       { data: "options" },
     ]
   });
@@ -71,11 +67,10 @@ $(document).ready(function () {
     
     e.preventDefault();
 
-    let intCedula = document.querySelector("#cedula").value;
-    let strNombre = document.querySelector("#nombre").value;
-    let strTipo = document.querySelector("#tipo").value;
+    let strDescripcion = document.querySelector("#descripcion").value;
+    let strEstado = document.querySelector("#estado").value;
 
-    if (intCedula === "" || strNombre === "" || strTipo === "") {
+    if (strDescripcion === "" || strEstado === "") {
       swalCustom.fire({
         icon: "error",
         title: "Error",
@@ -101,7 +96,7 @@ $(document).ready(function () {
           form.reset();
           swalCustom.fire({
             icon: "success",
-            title: "Proveedores",
+            title: "Conceptos",
             text: objData.msg,
             confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
             confirmButtonColor: "#aea322",
@@ -109,13 +104,12 @@ $(document).ready(function () {
           DataTableAc.api().ajax.reload();
         }else {
 
-          let errorCedula = objData.validations.hasOwnProperty('cedula') ? objData.validations.cedula : ""
-          let errorNombre = objData.validations.hasOwnProperty('nombre') ? objData.validations.nombre : ""
+          let errorDescripcion = objData.validations.hasOwnProperty('descripcion') ? objData.validations.descripcion : "" ;
           
           swalCustom.fire({
             icon: "error",
             title: "Error",
-            text: objData.validations ? errorCedula + " " + errorNombre : objData.msg,
+            text: objData.validations ? errorDescripcion : objData.msg,
             confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
             confirmButtonColor: "#aea322",
           });
@@ -127,7 +121,7 @@ $(document).ready(function () {
 
 function fntEdit(id) {
   //Apariencia del modal
-  document.querySelector("#titleModal").innerHTML = 'Actualizar proveedor';
+  document.querySelector("#titleModal").innerHTML = 'Actualizar concepto';
   document.querySelector("#btnActionForm").classList.replace("btn-primary", "btn-info");
   document.querySelector("#btnText").innerHTML = "Actualizar";
 
@@ -143,9 +137,7 @@ function fntEdit(id) {
 
         //Si el status es verdadero entonces se van a colocar los datos en el fomrulario
         document.querySelector("#id").value =objData.data.id;
-        document.querySelector("#cedula").value =objData.data.cedula;
-        document.querySelector("#nombre").value =objData.data.nombre;
-        document.querySelector("#tipo").value =objData.data.tipo;
+        document.querySelector("#descripcion").value =objData.data.descripcion;
         document.querySelector("#estado").value =objData.data.estado;
 
         if (objData.data.estado == 1) {
@@ -157,7 +149,6 @@ function fntEdit(id) {
         }
 
         $("#estado").selectpicker("refresh");
-        $("#tipo").selectpicker("refresh");
       }
     }
     $(modalNombreControlador).modal("show");
@@ -171,8 +162,8 @@ function fntDelete(id){
   //Configuracion de la alerta
   swalCustom.fire({
       icon: 'warning',
-      title: "Eliminar un proveedor",
-      text: "¿Realmente quieres eliminar este proveedor?",
+      title: "Eliminar un concepto",
+      text: "¿Realmente quieres eliminar este concepto?",
       type: "warning",
       showCancelButton: true,
       confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Si, eliminar",
@@ -196,7 +187,7 @@ function fntDelete(id){
             if (objData.status){
               swalCustom.fire({
                 icon: 'success',
-                title: 'Proveedores',
+                title: 'Conceptos',
                 text: objData.msg,
                 confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
                 confirmButtonColor: '#aea322'
@@ -221,11 +212,10 @@ function openModal(){
     
   document.querySelector('#id').value ="";//Limpiamos el input id **Muy importante
   document.querySelector('#btnText').innerHTML = "Guardar";
-  document.querySelector('#titleModal').innerHTML = "Nuevo proveedor";
+  document.querySelector('#titleModal').innerHTML = "Nuevo concepto";
   document.querySelector("#form"+controlador+"").reset();//Limpiamos Todos los campos
 
   $("#estado").selectpicker("refresh");
-  $("#tipo").selectpicker("refresh");
 
   var modal = new bootstrap.Modal(document.querySelector(modalNombreControlador));
   modal.show();

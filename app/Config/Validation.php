@@ -59,4 +59,14 @@ class Validation
             ]
         ]
     ];
+
+    public $descripcion_coneptos = [
+        'descripcion' => [
+            'rules' => 'required|is_unique[conceptos.descripcion,id,{id}]',
+            'errors' => [
+                'required' => 'El campo descripción es obligatorio.',
+                'is_unique' => 'Ya existe este concepto, favor dígita otra descripción.',
+            ]
+        ]
+    ];
 }

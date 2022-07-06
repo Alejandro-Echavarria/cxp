@@ -69,6 +69,23 @@
             die();
         }
 
+        public function getSelectProveedores() {
+
+            $htmlOptions = "";
+            $arrData = $this->proveedores->orderBy("id","desc")->where("estado != 0")->findAll();
+            if (count($arrData) > 0) {
+                
+                for ($i=0; $i < count($arrData); $i++) { 
+                    if ($arrData[$i]['estado'] == 1) {
+
+                        $htmlOptions .= '<option class="wrap-list border-bottom" value="'.$arrData[$i]['id'].'">'.$arrData[$i]['nombre'].'</option>';
+                    }
+                }
+            }
+            echo $htmlOptions;
+            die();
+        }
+
         public function store(){
 
             if ($this->request->getMethod() == "post" && $this->validate('cedula')) {

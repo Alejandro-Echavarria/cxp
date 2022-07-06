@@ -1,5 +1,5 @@
 <?php
-    // getModal($controlador);
+    getModal($controlador);
 ?>
 <div class="container-fluid">
 	<div class="row">
@@ -33,12 +33,10 @@
 						<thead>
 							<tr class="text-bold">
 								<th style="width: 10%;">#</th>
-								<th style="width: 10%;">C&eacute;dula</th>
-								<th style="width: 20%;">Nombre</th>
-								<th style="width: 10%;">Tipo</th>
-								<th style="width: 10%;">Blanace</th>
+								<th style="width: 10%;">Monto</th>
+								<th style="width: 20%;">Proveedor</th>
+								<th style="width: 10%;">Factura</th>
 								<th style="width: 10%;">Estado</th>
-								<th style="width: 20%;">Fecha</th>
 								<th style="width: 11%;">Opciones</th>
 							</tr>
 						</thead>

@@ -37,12 +37,10 @@ $(document).ready(function () {
     },
     columns: [
       { data: "id" },
-      { data: "cedula" },
+      { data: "monto" },
       { data: "nombre" },
-      { data: "tipo" },
-      { data: "balance" },
+      { data: "factura_id" },
       { data: "estado" },
-      { data: "fecha_registro" },
       { data: "options" },
     ]
   });
@@ -71,11 +69,11 @@ $(document).ready(function () {
     
     e.preventDefault();
 
-    let intCedula = document.querySelector("#cedula").value;
-    let strNombre = document.querySelector("#nombre").value;
-    let strTipo = document.querySelector("#tipo").value;
+    let intMonto = document.querySelector("#monto").value;
+    let intFactura = document.querySelector("#factura").value;
+    let intProveedor = document.querySelector("#proveedor").value;
 
-    if (intCedula === "" || strNombre === "" || strTipo === "") {
+    if (intMonto === "" || intFactura === "" || intProveedor === "") {
       swalCustom.fire({
         icon: "error",
         title: "Error",
@@ -101,7 +99,7 @@ $(document).ready(function () {
           form.reset();
           swalCustom.fire({
             icon: "success",
-            title: "Proveedores",
+            title: "Documentos",
             text: objData.msg,
             confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
             confirmButtonColor: "#aea322",
@@ -109,13 +107,12 @@ $(document).ready(function () {
           DataTableAc.api().ajax.reload();
         }else {
 
-          let errorCedula = objData.validations.hasOwnProperty('cedula') ? objData.validations.cedula : ""
-          let errorNombre = objData.validations.hasOwnProperty('nombre') ? objData.validations.nombre : ""
-          
+          let errorMonto = objData.validations.hasOwnProperty('monto') ? objData.validations.monto : "" ;
+
           swalCustom.fire({
             icon: "error",
             title: "Error",
-            text: objData.validations ? errorCedula + " " + errorNombre : objData.msg,
+            text: objData.validations ? errorMonto : objData.msg,
             confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
             confirmButtonColor: "#aea322",
           });
@@ -125,11 +122,36 @@ $(document).ready(function () {
   };
 });
 
+window.addEventListener('load', function(){
+    fntProveedores();
+
+}, false);
+
+//Extraemos las categorias
+function fntProveedores() {
+
+    const ajaxUrl = base_url+'/home/getselectproveedores';
+    const request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+    request.open("GET",ajaxUrl,true);
+    request.send();
+
+    request.onreadystatechange = function(){
+        if (request.readyState == 4 && request.status == 200) {
+            document.querySelector('#proveedor').innerHTML = request.responseText;
+            
+            //Limpiar el select para que se muestren los registros
+            $('.wrap-list').addClass('text-wrap');
+            $('#proveedor').selectpicker('refresh');
+        }
+    }
+}
+
 function fntEdit(id) {
   //Apariencia del modal
-  document.querySelector("#titleModal").innerHTML = 'Actualizar proveedor';
+  document.querySelector("#titleModalEdit").innerHTML = 'Realizar un pago';
   document.querySelector("#btnActionForm").classList.replace("btn-primary", "btn-info");
   document.querySelector("#btnText").innerHTML = "Actualizar";
+  document.querySelector("#monto_deuda").value = "";
 
   let id_pro = id;
   const request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -142,92 +164,27 @@ function fntEdit(id) {
       if (objData.status) {
 
         //Si el status es verdadero entonces se van a colocar los datos en el fomrulario
-        document.querySelector("#id").value =objData.data.id;
-        document.querySelector("#cedula").value =objData.data.cedula;
-        document.querySelector("#nombre").value =objData.data.nombre;
-        document.querySelector("#tipo").value =objData.data.tipo;
-        document.querySelector("#estado").value =objData.data.estado;
+        document.querySelector("#idEdit").value = objData.data.id;
+        document.querySelector("#monto_deuda").value = objData.data.monto;
+        document.querySelector("#monto").value = objData.data.monto;
 
-        if (objData.data.estado == 1) {
-          document.querySelector("#estado").value = 1;
-        } else {
-          if (objData.data.estado == 2) {
-            document.querySelector("#estado").value = 2;
-          }
-        }
-
-        $("#estado").selectpicker("refresh");
-        $("#tipo").selectpicker("refresh");
       }
     }
-    $(modalNombreControlador).modal("show");
+    $(modalNombreControlador + 'edit').modal("show");
   };
-}
-
-function fntDelete(id){
-   
-  const id_pro = id;
-
-  //Configuracion de la alerta
-  swalCustom.fire({
-      icon: 'warning',
-      title: "Eliminar un proveedor",
-      text: "¿Realmente quieres eliminar este proveedor?",
-      type: "warning",
-      showCancelButton: true,
-      confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Si, eliminar",
-      cancelButtonText: "<i class='fa fa-fw fa-times-circle'></i> No, cancelar",
-      closeOnConfirm: false,
-      closeOnCancel: true
-
-  }).then((result) => {
-      //Script para eliminar
-      if (result.isConfirmed) {
-          
-        const request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-        const ajaxUrl = base_url+'/'+controlador+'/delete';
-        const strData = "id="+id_pro;
-        request.open("POST",ajaxUrl,true);
-        request.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");//Forma en la que se enviaran los datos
-        request.send(strData);
-        request.onreadystatechange = function(){
-          if (request.readyState == 4 && request.status == 200) {
-            const objData = JSON.parse(request.responseText);
-            if (objData.status){
-              swalCustom.fire({
-                icon: 'success',
-                title: 'Proveedores',
-                text: objData.msg,
-                confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
-                confirmButtonColor: '#aea322'
-              });
-              DataTableAc.api().ajax.reload();
-            }else {
-              swalCustom.fire({
-                icon: 'error',
-                title: 'Error',
-                text: objData.msg,
-                confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
-                confirmButtonColor: '#aea322'
-              });
-            }
-          }
-        }
-      }
-  });
 }
 
 function openModal(){
     
-  document.querySelector('#id').value ="";//Limpiamos el input id **Muy importante
-  document.querySelector('#btnText').innerHTML = "Guardar";
-  document.querySelector('#titleModal').innerHTML = "Nuevo proveedor";
-  document.querySelector("#form"+controlador+"").reset();//Limpiamos Todos los campos
-
-  $("#estado").selectpicker("refresh");
-  $("#tipo").selectpicker("refresh");
-
-  var modal = new bootstrap.Modal(document.querySelector(modalNombreControlador));
-  modal.show();
-  // $(modalNombreControlador).modal('show');
-}
+    document.querySelector('#id').value ="";//Limpiamos el input id **Muy importante
+    document.querySelector('#btnText').innerHTML = "Guardar";
+    document.querySelector('#titleModal').innerHTML = "Nuevo documento";
+    document.querySelector("#form"+controlador+"").reset();//Limpiamos Todos los campos
+  
+    $("#estado").selectpicker("refresh");
+    $('#proveedor').selectpicker('refresh');
+  
+    var modal = new bootstrap.Modal(document.querySelector(modalNombreControlador));
+    modal.show();
+    // $(modalNombreControlador).modal('show');
+  }
