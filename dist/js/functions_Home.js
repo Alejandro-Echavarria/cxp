@@ -71,7 +71,7 @@ $(document).ready(function () {
     
     e.preventDefault();
 
-    let intCedula = document.querySelector("#cedula").value;
+    let intCedula = document.getElementById("cedula").value;
     let strNombre = document.querySelector("#nombre").value;
     let strTipo = document.querySelector("#tipo").value;
 
@@ -106,15 +106,11 @@ $(document).ready(function () {
         return false;
       }
     }
+    
+    let pCedula = intCedula.trim()
 
-    // Validar cedula
-    let c = intCedula.split("");
-    let v = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
-    let result = 0;
-    let up;
-    let oc;
-
-    if (c.length != 11) {
+    if (pCedula.trim().length != 11) {
+      
       swalCustom.fire({
         icon: "error",
         title: "Error",
@@ -126,29 +122,20 @@ $(document).ready(function () {
       return false;
     }
 
-    for (let i = 0; i < 10; i++) {
-      up = c[i] * v[i];
-      ab = up;
-      if (ab >= 10) {
+    const validarCedula = fntValidCedula(pCedula);
 
-        oc = ab.toString().split("").map((x) => parseInt(x)).reduce((x, y) => x + y);
-      } else {
-        oc = ab;
-      }
-      result = parseFloat(result) + parseFloat(oc);
-    }
+    if (validarCedula === 0) {
 
-    let dp = result;
-    let ac = dp.toString().split("")[0] + "0";
-    let uj = (ac / 10) * 10;
+      swalCustom.fire({
+        icon: "error",
+        title: "Error",
+        text: "La cédula es incorrecta",
+        confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+        confirmButtonColor: "#aea322",
+      });
 
-    ac = parseInt(ac);
-
-    if (uj < dp) {
-      dp = uj + 10 - dp;
-    }
-
-    if (c[10] == dp) {
+      return false;
+    }else {
 
       let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
       let ajaxUrl = base_url + "/" + controlador + "/store";
@@ -186,18 +173,8 @@ $(document).ready(function () {
             return false;
           }
         }
-      }
-    } else {
-      swalCustom.fire({
-        icon: "error",
-        title: "Error",
-        text: "La cédula es incorrecta",
-        confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
-        confirmButtonColor: "#aea322",
-      });
-
-      return false;
-    }
+      } 
+    }   
     // End validar cedula
   };
 });

@@ -89,7 +89,7 @@
             if ($this->request->getMethod() == "post" && $this->validate('cedula')) {
                 
                 $id = intval(strClean($this->request->getPost('id')));
-                $intCedula = intval(strClean($this->request->getPost('cedula')));
+                $intCedula = strClean($this->request->getPost('cedula'));
                 $strNombre = strClean($this->request->getPost('nombre'));
                 $strTipo = strClean($this->request->getPost('tipo'));
                 $intEstado = intval($this->request->getPost('estado'));

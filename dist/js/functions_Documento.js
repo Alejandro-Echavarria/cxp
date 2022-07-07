@@ -306,15 +306,15 @@ function fntView(id){
   request.onreadystatechange = function () {
     
     if (request.readyState == 4 && request.status == 200) {
+      if (request.status) {
+        
+        const objData = JSON.parse(request.responseText);
+
+        if (objData.length != 0) {  
+          for (let i = 0; i < objData.length; i++) {
       
-      const objData = JSON.parse(request.responseText);
-      const mostrar = '';
-
-      if (objData.length != 0) {
-
-        for (let i = 0; i <= objData.length; i++) {
-    
-          identificador.innerHTML += '<li class="list-group-item fw-bold">Concepto: '+objData[i].descripcion+' | nombre: '+objData[i].nombre+' | identificador: '+objData[i].documento_id+' | monto: '+objData[i].monto+'</li>';
+            identificador.innerHTML += '<li class="list-group-item fw-bold"><div>Concepto: '+objData[i].descripcion+' | nombre: '+objData[i].nombre+' | identificador: '+objData[i].documento_id+' | monto: '+objData[i].monto+'</div></li>';
+          }
         }
       }
     }

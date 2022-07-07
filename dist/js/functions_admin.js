@@ -138,6 +138,54 @@ function fntValidEmail() {
 	});
 }
 
+function fntValidCedula(pCedula) {
+	
+	let arrData = 0;
+
+	let numero = pCedula
+	let suma = 0;
+	let residuo = 0;
+	let modulo = 11;
+	// Se almacenan los digitos de la cedula en variables
+	let d1  = numero.substr(0,1);
+	let d2  = numero.substr(1,1);
+	let d3  = numero.substr(2,1);
+	let d4  = numero.substr(3,1);
+	let d5  = numero.substr(4,1);
+	let d6  = numero.substr(5,1);
+	let d7  = numero.substr(6,1);
+	let d8  = numero.substr(7,1);
+	let d9  = numero.substr(8,1);
+	let d10 = numero.substr(9,1);
+	let d11 = numero.substr(10,1);             
+	// Se multiplica cada elemento de la cedula y se compara si excede los dos digitos
+	let p1  = d1  * 1; if (p1  >= 10) p1  = parseInt(p1.toString().substr(0,1)) + parseInt(p1.toString().substr(1,1));
+	let p2  = d2  * 2; if (p2  >= 10) p2  = parseInt(p2.toString().substr(0,1)) + parseInt(p2.toString().substr(1,1));
+	let p3  = d3  * 1; if (p3  >= 10) p3  = parseInt(p3.toString().substr(0,1)) + parseInt(p3.toString().substr(1,1));
+	let p4  = d4  * 2; if (p4  >= 10) p4  = parseInt(p4.toString().substr(0,1)) + parseInt(p4.toString().substr(1,1));
+	let p5  = d5  * 1; if (p5  >= 10) p5  = parseInt(p5.toString().substr(0,1)) + parseInt(p5.toString().substr(1,1));
+	let p6  = d6  * 2; if (p6  >= 10) p6  = parseInt(p6.toString().substr(0,1)) + parseInt(p6.toString().substr(1,1));
+	let p7  = d7  * 1; if (p7  >= 10) p7  = parseInt(p7.toString().substr(0,1)) + parseInt(p7.toString().substr(1,1));
+	let p8  = d8  * 2; if (p8  >= 10) p8  = parseInt(p8.toString().substr(0,1)) + parseInt(p8.toString().substr(1,1));
+	let p9  = d9  * 1; if (p9  >= 10) p9  = parseInt(p9.toString().substr(0,1)) + parseInt(p9.toString().substr(1,1));
+	let p10 = d10 * 2; if (p10 >= 10) p10 = parseInt(p10.toString().substr(0,1)) + parseInt(p10.toString().substr(1,1));
+	modulo = 10;
+	// Se suman los resultados   
+	suma = p1 + p2 + p3 + p4 + p5 + p6 + p7 + p8 + p9 + p10;
+	residuo = suma % modulo;
+	// Si residuo=0, digito verificador=0, en caso contrario 10 - residuo 
+	digitoVerificador = residuo==0 ? 0: modulo - residuo;
+	// Se compara el elemento de la posicion 10 con el digito verificador
+	if (digitoVerificador != d11){
+
+		arrData = 0;
+	}else{
+
+		arrData = 1;
+	};
+	return arrData;
+}
+
 /* window indica cuando se cargue todo el documento, le agregamos un evento load el 
    cual ejecuta la funcion y todas las demas*/
 window.addEventListener('load', function(){

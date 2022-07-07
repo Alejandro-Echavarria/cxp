@@ -230,7 +230,6 @@
 
         public function conceptosDocumentos() {
 
-
             $id = intval(strClean($this->request->getVar('idshow')));
             if ($id > 0) {
     
@@ -245,7 +244,7 @@
                                                    ->where('cd.documento_id', $id)
                                                    ->findAll();
             }
-            // header('Content-Type: application/json');
+            header('Content-Type: application/json');
             echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
             die();
         }

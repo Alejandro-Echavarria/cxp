@@ -81,12 +81,12 @@
 <!-- Modal para mostrar el historial de transacciones hechas sobre un documento -->
 <div class="modal fade" id="<?= ucfirst(uri_string()) ?>show" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-lg">
-        <div class="modal-content modal-style rounded-3 border-0" style="overflow: visible;">
+        <div class="modal-content modal-style rounded-3 border-0">
             <div class="modal-header color-primario">
                 <h5 id="titleModalShow" class="modal-title fw-bold">Modal title</h5>
                 <button type="button" class="btn-close details-color" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body" style="overflow: visible;">
+            <div class="modal-body">
                 <form id="form<?= ucfirst(uri_string()) ?>show" name="form<?= ucfirst(uri_string()) ?>show" class="form-horizontal">
                     <input type="hidden" id="idShow" name="idShow" value="">
                     <div class="row g-3">
