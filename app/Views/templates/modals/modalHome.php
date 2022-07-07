@@ -12,7 +12,7 @@
                     <div class="row g-3">
                         <div class="col-md-6">
                             <label for="cedula" class="form-label fw-bold">C&eacute;dula <span class="text-danger">*</span></label>
-                            <input type="text" class="form-control" id="cedula" name="cedula">
+                            <input type="text" class="form-control validNumber" id="cedula" name="cedula" onkeypress="return controlTag(event);">
                         </div>
                         <div class="col-md-6">
                             <label for="nombre" class="form-label fw-bold">Nombre <span class="text-danger">*</span></label>

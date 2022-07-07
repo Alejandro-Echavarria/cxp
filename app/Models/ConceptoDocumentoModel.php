@@ -11,8 +11,10 @@
         protected $returnType     = 'array';
         protected $useSoftDeletes = false;
 
-        protected $allowedFields = ['concepto_id',  
-                                    'documento_id'];
+        protected $allowedFields = ['concepto_id',
+                                    'proveedor_id', 
+                                    'documento_id',
+                                    'monto'];
 
         protected $useTimestamps = false;
         protected $createdField  = '';

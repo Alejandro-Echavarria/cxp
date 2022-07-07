@@ -54,14 +54,12 @@
                 } else {
                     $arrData[$i]['estado'] = '<span class="badge colorRed">Inactivo</span>';
                 }
-
-                $btnView = '<button type="button" class="btn btn-sm colorBlue-boton border-0" title="Ver" onClick="fntView('. $arrData[$i]['id'] .')" ><i class="fa-solid fa-eye" data-toggle="tooltip"></i></button>';
-                        
+        
                 $btnEdit = '<button type="button" class="btn btn-sm colorGray-boton border-0" title="Editar" onClick="fntEdit('. $arrData[$i]['id'] .')" ><i class="fas fa-pencil-alt" data-toggle="tooltip"></i></button>';
 
                 $btnDelete = '<button type="button" class="btn btn-sm colorRed-boton" title="Eliminar" onClick="fntDelete('. $arrData[$i]['id'] .')" ><i class="fas fa-trash-alt" data-toggle="tooltip"></i></button>';
 
-                $arrData[$i]['options'] = '<div clas="text-center">'. $btnView . ' ' . $btnEdit . ' ' . $btnDelete . '</div>';
+                $arrData[$i]['options'] = '<div clas="text-center">' . $btnEdit . ' ' . $btnDelete . '</div>';
             };
 
             header('Content-Type: application/json');

@@ -87,41 +87,118 @@ $(document).ready(function () {
       return false;
     }
 
-    let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
-    let ajaxUrl = base_url + "/" + controlador + "/store";
-    let formData = new FormData(form);
-    request.open("POST", ajaxUrl, true);
-    request.send(formData);
+    //Nos dirigimos a todos los elementos cone esta clase
+    let elementsValid = document.getElementsByClassName("valid");
+    //Iteramos con cada elemento
+    for (let i = 0; i < elementsValid.length; i++) {
+      /*Indicamos que si elementsValid en la posicion que se encuentre contiene la clase is-invalid 
+      entonces muestra la alerta*/
+      if (elementsValid[i].classList.contains('is-invalid')) {
 
-    request.onreadystatechange = function () {
-      if (request.readyState == 4 && request.status == 200) {
-        const objData = JSON.parse(request.responseText);
-        if (objData.status) {
-          $(modalNombreControlador).modal("hide");
-          form.reset();
-          swalCustom.fire({
-            icon: "success",
-            title: "Proveedores",
-            text: objData.msg,
+        swalCustom.fire({
+            icon: 'error',
+            title: 'Atención',
+            text: 'Por favor verifique los campos en rojo',
             confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
-            confirmButtonColor: "#aea322",
+            confirmButtonColor: '#aea322'
           });
-          DataTableAc.api().ajax.reload();
-        }else {
 
-          let errorCedula = objData.validations.hasOwnProperty('cedula') ? objData.validations.cedula : ""
-          let errorNombre = objData.validations.hasOwnProperty('nombre') ? objData.validations.nombre : ""
-          
-          swalCustom.fire({
-            icon: "error",
-            title: "Error",
-            text: objData.validations ? errorCedula + " " + errorNombre : objData.msg,
-            confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
-            confirmButtonColor: "#aea322",
-          });
+        return false;
+      }
+    }
+
+    // Validar cedula
+    let c = intCedula.split("");
+    let v = [1, 2, 1, 2, 1, 2, 1, 2, 1, 2];
+    let result = 0;
+    let up;
+    let oc;
+
+    if (c.length != 11) {
+      swalCustom.fire({
+        icon: "error",
+        title: "Error",
+        text: "La cédula no tiene el tamaño adecuado",
+        confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+        confirmButtonColor: "#aea322",
+      });
+
+      return false;
+    }
+
+    for (let i = 0; i < 10; i++) {
+      up = c[i] * v[i];
+      ab = up;
+      if (ab >= 10) {
+
+        oc = ab.toString().split("").map((x) => parseInt(x)).reduce((x, y) => x + y);
+      } else {
+        oc = ab;
+      }
+      result = parseFloat(result) + parseFloat(oc);
+    }
+
+    let dp = result;
+    let ac = dp.toString().split("")[0] + "0";
+    let uj = (ac / 10) * 10;
+
+    ac = parseInt(ac);
+
+    if (uj < dp) {
+      dp = uj + 10 - dp;
+    }
+
+    if (c[10] == dp) {
+
+      let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+      let ajaxUrl = base_url + "/" + controlador + "/store";
+      let formData = new FormData(form);
+      request.open("POST", ajaxUrl, true);
+      request.send(formData);
+
+      request.onreadystatechange = function () {
+        if (request.readyState == 4 && request.status == 200) {
+          const objData = JSON.parse(request.responseText);
+          if (objData.status) {
+            $(modalNombreControlador).modal("hide");
+            form.reset();
+            swalCustom.fire({
+              icon: "success",
+              title: "Proveedores",
+              text: objData.msg,
+              confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+              confirmButtonColor: "#aea322",
+            });
+            DataTableAc.api().ajax.reload();
+          }else {
+
+            let errorCedula = objData.validations.hasOwnProperty('cedula') ? objData.validations.cedula : ""
+            let errorNombre = objData.validations.hasOwnProperty('nombre') ? objData.validations.nombre : ""
+            
+            swalCustom.fire({
+              icon: "error",
+              title: "Error",
+              text: objData.validations ? errorCedula + " " + errorNombre : objData.msg,
+              confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+              confirmButtonColor: "#aea322",
+            });
+
+            return false;
+          }
         }
       }
-    };
+    } else {
+      swalCustom.fire({
+        icon: "error",
+        title: "Error",
+        text: "La cédula es incorrecta",
+        confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+        confirmButtonColor: "#aea322",
+      });
+
+      return false;
+    }
+    // End validar cedula
   };
 });
 

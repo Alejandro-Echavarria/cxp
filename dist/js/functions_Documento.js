@@ -85,6 +85,26 @@ $(document).ready(function () {
       return false;
     }
 
+    //Nos dirigimos a todos los elementos cone esta clase
+    let elementsValid = document.getElementsByClassName("valid");
+    //Iteramos con cada elemento
+    for (let i = 0; i < elementsValid.length; i++) {
+      /*Indicamos que si elementsValid en la posicion que se encuentre contiene la clase is-invalid 
+      entonces muestra la alerta*/
+      if (elementsValid[i].classList.contains('is-invalid')) {
+
+        swalCustom.fire({
+            icon: 'error',
+            title: 'Atención',
+            text: 'Por favor verifique los campos en rojo',
+            confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+            confirmButtonColor: '#aea322'
+          });
+
+        return false;
+      }
+    }
+
     let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
     let ajaxUrl = base_url + "/" + controlador + "/store";
     let formData = new FormData(form);
@@ -120,30 +140,127 @@ $(document).ready(function () {
       }
     };
   };
+
+  // Form for edit document balance
+  const formBlanace = document.querySelector("#form" + controlador + "edit");
+
+  formBlanace.onsubmit = function (e) {
+    
+    e.preventDefault();
+
+    let id = document.querySelector("#idEdit").value;
+    let intMonto = document.querySelector("#monto-pagar").value;
+
+    if (id === "" || intMonto === "") {
+      swalCustom.fire({
+        icon: "error",
+        title: "Error",
+        text: "Todos los campos son obligatorios",
+        confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+        confirmButtonColor: "#aea322",
+      });
+
+      return false;
+    }
+
+    //Nos dirigimos a todos los elementos cone esta clase
+    let elementsValid = document.getElementsByClassName("valid");
+    //Iteramos con cada elemento
+    for (let i = 0; i < elementsValid.length; i++) {
+      /*Indicamos que si elementsValid en la posicion que se encuentre contiene la clase is-invalid 
+      entonces muestra la alerta*/
+      if (elementsValid[i].classList.contains('is-invalid')) {
+
+        swalCustom.fire({
+            icon: 'error',
+            title: 'Atención',
+            text: 'Por favor verifique los campos en rojo',
+            confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+            confirmButtonColor: '#aea322'
+          });
+
+        return false;
+      }
+    }
+
+    let request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+    let ajaxUrl = base_url + "/" + controlador + "/editbalance";
+    let formData = new FormData(formBlanace);
+    request.open("POST", ajaxUrl, true);
+    request.send(formData);
+
+    request.onreadystatechange = function () {
+      if (request.readyState == 4 && request.status == 200) {
+        const objData = JSON.parse(request.responseText);
+        if (objData.status) {
+          $(modalNombreControlador + 'edit').modal("hide");
+          formBlanace.reset();
+          swalCustom.fire({
+            icon: "success",
+            title: "Documentos",
+            text: objData.msg,
+            confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+            confirmButtonColor: "#aea322",
+          });
+          DataTableAc.api().ajax.reload();
+        }else {
+
+          let errorMonto = objData.validations.hasOwnProperty('monto') ? objData.validations.monto : "" ;
+
+          swalCustom.fire({
+            icon: "error",
+            title: "Error",
+            text: objData.validations ? errorMonto : objData.msg,
+            confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+            confirmButtonColor: "#aea322",
+          });
+        }
+      }
+    };
+  };
 });
 
 window.addEventListener('load', function(){
     fntProveedores();
+    fntConceptos();
 
 }, false);
 
 //Extraemos las categorias
 function fntProveedores() {
 
-    const ajaxUrl = base_url+'/home/getselectproveedores';
-    const request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
-    request.open("GET",ajaxUrl,true);
-    request.send();
+  const ajaxUrl = base_url+'/home/getselectproveedores';
+  const request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+  request.open("GET",ajaxUrl,true);
+  request.send();
 
-    request.onreadystatechange = function(){
-        if (request.readyState == 4 && request.status == 200) {
-            document.querySelector('#proveedor').innerHTML = request.responseText;
-            
-            //Limpiar el select para que se muestren los registros
-            $('.wrap-list').addClass('text-wrap');
-            $('#proveedor').selectpicker('refresh');
-        }
-    }
+  request.onreadystatechange = function(){
+      if (request.readyState == 4 && request.status == 200) {
+          document.querySelector('#proveedor').innerHTML = request.responseText;
+          
+          //Limpiar el select para que se muestren los registros
+          $('.wrap-list').addClass('text-wrap');
+          $('#proveedor').selectpicker('refresh');
+      }
+  }
+}
+
+function fntConceptos() {
+
+  const ajaxUrl = base_url+'/concepto/getSelectConceptos';
+  const request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
+  request.open("GET",ajaxUrl,true);
+  request.send();
+
+  request.onreadystatechange = function(){
+      if (request.readyState == 4 && request.status == 200) {
+          document.querySelector('#conceptos').innerHTML = request.responseText;
+          
+          //Limpiar el select para que se muestren los registros
+          $('.wrap-list').addClass('text-wrap');
+          $('#conceptos').selectpicker('refresh');
+      }
+  }
 }
 
 function fntEdit(id) {
@@ -151,7 +268,7 @@ function fntEdit(id) {
   document.querySelector("#titleModalEdit").innerHTML = 'Realizar un pago';
   document.querySelector("#btnActionForm").classList.replace("btn-primary", "btn-info");
   document.querySelector("#btnText").innerHTML = "Actualizar";
-  document.querySelector("#monto_deuda").value = "";
+  document.querySelector("#monto-pagar").value = "";
 
   let id_pro = id;
   const request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
@@ -171,6 +288,37 @@ function fntEdit(id) {
       }
     }
     $(modalNombreControlador + 'edit').modal("show");
+  };
+}
+
+function fntView(id){
+
+  document.querySelector("#titleModalShow").innerHTML = `Historial - documento (${id})`;
+  document.querySelector("#btnActionForm").classList.replace("btn-primary", "btn-info");
+  const identificador = document.getElementById('listHistory');
+  identificador.innerHTML = "";
+
+  let id_pro = id;
+  const request = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+  const ajaxUrl = base_url + "/" + controlador + "/conceptosdocumentos?idshow=" + id_pro;
+  request.open("GET", ajaxUrl, true);
+  request.send();
+  request.onreadystatechange = function () {
+    
+    if (request.readyState == 4 && request.status == 200) {
+      
+      const objData = JSON.parse(request.responseText);
+      const mostrar = '';
+
+      if (objData.length != 0) {
+
+        for (let i = 0; i <= objData.length; i++) {
+    
+          identificador.innerHTML += '<li class="list-group-item fw-bold">Concepto: '+objData[i].descripcion+' | nombre: '+objData[i].nombre+' | identificador: '+objData[i].documento_id+'</li>';
+        }
+      }
+    }
+    $(modalNombreControlador + 'show').modal("show");
   };
 }
 
