@@ -36,7 +36,7 @@
 								<th style="width: 10%;">C&eacute;dula</th>
 								<th style="width: 20%;">Nombre</th>
 								<th style="width: 10%;">Tipo</th>
-								<th style="width: 10%;">Blanace</th>
+								<th style="width: 10%;">Balance</th>
 								<th style="width: 10%;">Estado</th>
 								<th style="width: 20%;">Fecha</th>
 								<th style="width: 11%;">Opciones</th>
