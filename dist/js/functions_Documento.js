@@ -314,7 +314,7 @@ function fntView(id){
 
         for (let i = 0; i <= objData.length; i++) {
     
-          identificador.innerHTML += '<li class="list-group-item fw-bold">Concepto: '+objData[i].descripcion+' | nombre: '+objData[i].nombre+' | identificador: '+objData[i].documento_id+'</li>';
+          identificador.innerHTML += '<li class="list-group-item fw-bold">Concepto: '+objData[i].descripcion+' | nombre: '+objData[i].nombre+' | identificador: '+objData[i].documento_id+' | monto: '+objData[i].monto+'</li>';
         }
       }
     }

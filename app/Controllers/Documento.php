@@ -236,7 +236,8 @@
     
                 $arrData = $this->conceptoDocumento->select('c.descripcion,
                                                              p.nombre,
-                                                             cd.documento_id')
+                                                             cd.documento_id,
+                                                             cd.monto')
                                                    ->from('concepto_documento cd')
                                                    ->join('proveedores p', 'cd.proveedor_id = p.id')
                                                    ->join('conceptos c', 'cd.concepto_id = c.id')
