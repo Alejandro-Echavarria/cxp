@@ -9,7 +9,7 @@
 			</div>
 			<div class="border-0">
 				<div class="color-primario personal-border">
-					<div class="p-3 rounded">
+					<div class="p-2 rounded">
 						<div class="d-flex flex-row justify-content-around align-items-center">
 							<div class="flex-grow-1">
 								<input type="text" class="form-control text-gray personal-border border-0" placeholder="Buscar..." id="txtBuscar" name="txtBuscar">
