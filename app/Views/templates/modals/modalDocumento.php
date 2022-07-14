@@ -92,7 +92,7 @@
                     <div class="row g-3">
                         <div id="show-history" class="col-md-12">
                             <ul id="listHistory" class="list-group list-group-flush">
-                                
+
                             </ul>
                         </div>
                     </div>
@@ -102,6 +102,55 @@
                 <button class="btn colorDark-boton fw-bold" type="button" data-bs-dismiss="modal">
                     <i class="fa fa-fw fa-times-circle"> </i> Cerrar
                 </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<div style="z-index: 9999;" class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+    <div class="offcanvas-header color-primario">
+        <h5 class="offcanvas-title fw-bold" id="offcanvasScrollingLabel">Detalles del documento</h5>
+        <button type="button" class="btn-close details-color" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <div id="content-offcanvas">
+            <div class="mb-3">
+                <span id="span-estado" class="badge"></span>
+            </div>
+            <form id="form<?= ucfirst(uri_string()) ?>offcanvas" name="form<?= ucfirst(uri_string()) ?>offcanvas" class="form-horizontal">
+                <input type="hidden" id="idoffcanvas" name="idoffcanvas" value="">
+                <div class="row g-3">
+                    <div class="col-md-12">
+                        <label for="descripcion-offcanvas" class="form-label fw-bold">Descripci&oacute;n </label>
+                        <input type="text" class="form-control bg-transparent" id="descripcion-offcanvas" name="descripcion-offcanvas" readonly>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="identificador-offcanvas" class="form-label fw-bold">Identificador auxiliar</label>
+                        <input type="text" class="form-control bg-transparent" id="identificador-offcanvas" name="identificador-offcanvas" readonly>
+                    </div>
+                    <div class="col-6">
+                        <label for="cuenta-cr-offcanvas" class="form-label fw-bold">C. cr&eacute;dito </label>
+                        <input type="text" class="form-control bg-transparent" id="cuenta-cr-offcanvas" name="cuenta-cr-offcanvas" readonly>
+                    </div>
+                    <div class="col-6">
+                        <label for="cuenta-db-offcanvas" class="form-label fw-bold">C. d&eacute;bito </label>
+                        <input type="text" class="form-control bg-transparent" id="cuenta-db-offcanvas" name="cuenta-db-offcanvas" readonly>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="monto-offcanvas" class="form-label fw-bold">Monto </label>
+                        <input type="text" class="form-control bg-transparent" id="monto-offcanvas" name="monto-offcanvas" readonly>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="id-asiento-offcanvas" class="form-label fw-bold">ID asiento </label>
+                        <input type="text" class="form-control bg-transparent" id="id-asiento-offcanvas" name="id-asiento-offcanvas" readonly>
+                    </div>
+                </div>
+            </form>
+            <div class="mt-3 d-flex justify-content-end">
+                <div id="footer-offcanvas">
+                </div>
             </div>
         </div>
     </div>

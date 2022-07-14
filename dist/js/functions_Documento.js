@@ -310,16 +310,57 @@ function fntView(id){
         
         const objData = JSON.parse(request.responseText);
 
-        if (objData.length != 0) {  
+        if (objData.length != 0) {
           for (let i = 0; i < objData.length; i++) {
+            
+            let boton_offcanvas = objData[i].estado == 0 ? '<button class="btn btn-sm colorBlue-boton personal-border" type="button" onClick="offCanvasCall()"><i class="fas fa-hand-holding-usd"></i></button>' : '<button class="btn btn-sm colorGray-boton personal-border" type="button" onClick="offCanvasCallView()"><i class="fa-solid fa-eye"></i></button>';
       
-            identificador.innerHTML += '<li class="list-group-item fw-bold"><div>Concepto: '+objData[i].descripcion+' | nombre: '+objData[i].nombre+' | identificador: '+objData[i].documento_id+' | monto: '+objData[i].monto+'</div></li>';
+            identificador.innerHTML += '<li class="list-group-item fw-bold d-flex justify-content-between"><div>Concepto: '+objData[i].descripcion+' | nombre: '+objData[i].nombre+' | identificador: '+objData[i].documento_id+' | monto: '+objData[i].monto+'</div><div class="">'+boton_offcanvas+'</div></li>';
           }
+        }else{
+          identificador.innerHTML = `No existen registros`;
         }
       }
     }
     $(modalNombreControlador + 'show').modal("show");
   };
+}
+
+function offCanvasCall() {
+
+  let myOffcanvas = document.getElementById('offcanvasScrolling');
+  let bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
+  
+  let estadoOffCanvas = document.getElementById('span-estado');
+  estadoOffCanvas.classList.contains('colorGreen') ? estadoOffCanvas.classList.remove('colorGreen') : "";
+  estadoOffCanvas.classList.add('colorYellow');
+  estadoOffCanvas.innerHTML = "Asiento pendiente";
+  
+  let montoTransaccion = document.getElementById('monto-offcanvas');
+  // montoTransaccion.value = ;
+  let btnEnviarDatosAPI = '<button id="btn-enviar-datos-API" class="btn fw-bold colorBlue-boton personal-border" type="button" onClick="offCanvasCall()"><i class="fa fa-fw fa-check-circle"></i> Enviar</button>';
+
+  let footerOfCanvas = document.getElementById('footer-offcanvas');
+  footerOfCanvas.innerHTML = btnEnviarDatosAPI;
+
+
+  bsOffcanvas.show();
+}
+
+function offCanvasCallView() {
+
+  let myOffcanvas = document.getElementById('offcanvasScrolling');
+  let bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
+
+  let estadoOffCanvas = document.getElementById('span-estado');
+  estadoOffCanvas.classList.contains('colorYellow') ? estadoOffCanvas.classList.remove('colorYellow') : "";
+  estadoOffCanvas.classList.add('colorGreen');
+  estadoOffCanvas.innerHTML = "Asiento enviado";
+
+  let borrarBoton = document.getElementById('btn-enviar-datos-API');
+  borrarBoton ? borrarBoton.remove() : "";
+
+  bsOffcanvas.show();
 }
 
 function openModal(){
@@ -332,7 +373,7 @@ function openModal(){
     $("#estado").selectpicker("refresh");
     $('#proveedor').selectpicker('refresh');
   
-    var modal = new bootstrap.Modal(document.querySelector(modalNombreControlador));
+    let modal = new bootstrap.Modal(document.querySelector(modalNombreControlador));
     modal.show();
     // $(modalNombreControlador).modal('show');
   }

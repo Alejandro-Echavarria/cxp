@@ -59,14 +59,14 @@
                 $btnEdit = '';
                 $btnDelete = '';
 
-                $btnView = '<button type="button" class="btn btn-sm colorBlue-boton border-0" title="Ver" onClick="fntView('. $arrData[$i]['id'] .')" ><i class="fa-solid fa-eye" data-toggle="tooltip"></i></button>';
+                $btnView = '<button type="button" class="btn btn-sm colorBlue-boton border-0 personal-border" title="Ver" onClick="fntView('. $arrData[$i]['id'] .')" ><i class="fa-solid fa-eye" data-toggle="tooltip"></i></button>';
 
                 //Mediante este if le indicamos que si el array en el que estamos, en su 'status' es igual a 1, entonces,
                 // Que cambie ese valor por el que le indicamos del badget, de lo contrario, que use el otro
                 if ($arrData[$i]['estado'] == '1') {
                     
                     $arrData[$i]['estado'] = '<span class="badge colorYellow">Pendiente</span>';
-                    $btnEdit = '<button type="button" class="btn btn-sm colorGray-boton border-0" title="Editar" onClick="fntEdit('. $arrData[$i]['id'] .')" ><i class="fas fa-pencil-alt" data-toggle="tooltip"></i></button>';
+                    $btnEdit = '<button type="button" class="btn btn-sm colorGray-boton border-0 personal-border" title="Editar" onClick="fntEdit('. $arrData[$i]['id'] .')" ><i class="fas fa-pencil-alt" data-toggle="tooltip"></i></button>';
                 } else {
                     $arrData[$i]['estado'] = '<span class="badge colorGray">Pagado</span>';
                 }
@@ -233,9 +233,11 @@
             $id = intval(strClean($this->request->getVar('idshow')));
             if ($id > 0) {
     
-                $arrData = $this->conceptoDocumento->select('c.descripcion,
+                $arrData = $this->conceptoDocumento->select('cd.id,
+                                                             c.descripcion,
                                                              p.nombre,
                                                              cd.documento_id,
+                                                             cd.estado,
                                                              cd.monto')
                                                    ->from('concepto_documento cd')
                                                    ->join('proveedores p', 'cd.proveedor_id = p.id')
