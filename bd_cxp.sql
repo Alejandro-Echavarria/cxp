@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Jul 07, 2022 at 06:16 PM
+-- Generation Time: Jul 14, 2022 at 07:35 PM
 -- Server version: 5.7.33
 -- PHP Version: 8.1.4
 
@@ -44,7 +44,10 @@ CREATE TABLE `concepto_documento` (
   `concepto_id` int(11) NOT NULL,
   `proveedor_id` int(11) NOT NULL,
   `documento_id` int(11) NOT NULL,
-  `monto` decimal(10,0) NOT NULL
+  `monto` decimal(10,0) NOT NULL,
+  `asiento_id` varchar(255) DEFAULT NULL,
+  `fecha` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `estado` varchar(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
