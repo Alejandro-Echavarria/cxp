@@ -313,7 +313,7 @@ function fntView(id){
         if (objData.length != 0) {
           for (let i = 0; i < objData.length; i++) {
             
-            let boton_offcanvas = objData[i].estado == 0 ? '<button class="btn btn-sm colorBlue-boton personal-border" type="button" onClick="offCanvasCall()"><i class="fas fa-hand-holding-usd"></i></button>' : '<button class="btn btn-sm colorGray-boton personal-border" type="button" onClick="offCanvasCallView()"><i class="fa-solid fa-eye"></i></button>';
+            let boton_offcanvas = objData[i].estado == 0 ? '<button class="btn btn-sm colorBlue-boton personal-border" type="button" onClick="offCanvasCall('+objData[i].id+')"><i class="fas fa-hand-holding-usd"></i></button>' : '<button class="btn btn-sm colorGray-boton personal-border" type="button" onClick="offCanvasCallView('+objData[i].id+')"><i class="fa-solid fa-eye"></i></button>';
       
             identificador.innerHTML += '<li class="list-group-item fw-bold d-flex justify-content-between"><div>Concepto: '+objData[i].descripcion+' | nombre: '+objData[i].nombre+' | identificador: '+objData[i].documento_id+' | monto: '+objData[i].monto+'</div><div class="">'+boton_offcanvas+'</div></li>';
           }
@@ -326,31 +326,65 @@ function fntView(id){
   };
 }
 
-function offCanvasCall() {
+async function offCanvasCall(id) {
 
-  let myOffcanvas = document.getElementById('offcanvasScrolling');
-  let bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
-  
   let estadoOffCanvas = document.getElementById('span-estado');
   estadoOffCanvas.classList.contains('colorGreen') ? estadoOffCanvas.classList.remove('colorGreen') : "";
   estadoOffCanvas.classList.add('colorYellow');
   estadoOffCanvas.innerHTML = "Asiento pendiente";
-  
-  let montoTransaccion = document.getElementById('monto-offcanvas');
-  // montoTransaccion.value = ;
-  let btnEnviarDatosAPI = '<button id="btn-enviar-datos-API" class="btn fw-bold colorBlue-boton personal-border" type="button" onClick="offCanvasCall()"><i class="fa fa-fw fa-check-circle"></i> Enviar</button>';
+
+  let btnEnviarDatosAPI = `<button id="btn-enviar-datos-API" class="btn fw-bold colorBlue-boton personal-border" type="submit" form="form${controlador}offcanvas"><i class="fa fa-fw fa-check-circle"></i> Enviar</button>`;
 
   let footerOfCanvas = document.getElementById('footer-offcanvas');
   footerOfCanvas.innerHTML = btnEnviarDatosAPI;
 
+  let datos = await datosOffCanvas(id);
+  const formAPI = document.querySelector(`#form${controlador}offcanvas`);
+  const url =  `${base_url}/${controlador}/update`;
+  
+  formAPI.onsubmit = async (e) => {
+    e.preventDefault();
+    
+    // return console.log(datos.data)
+    let sendData = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(datos.data)
+    });
 
-  bsOffcanvas.show();
+    if (sendData.status === 200) {
+      
+      const objData = JSON.parse(await sendData.text());
+      if (objData.status) {
+        
+        swalCustom.fire({
+          icon: "success",
+          title: "Documentos",
+          text: objData.msg,
+          confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+          confirmButtonColor: "#aea322",
+        });
+
+        fntView(datos.data.documento_id);
+        offCanvasCallView(id);
+      }else{
+
+        let errorMonto = objData.validations.hasOwnProperty('monto') ? objData.validations.monto : "" ;
+        swalCustom.fire({
+          icon: "error",
+          title: "Error",
+          text: objData.validations ? errorMonto : objData.msg,
+          confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+          confirmButtonColor: "#aea322",
+        });
+      }
+    }
+  };
 }
 
-function offCanvasCallView() {
-
-  let myOffcanvas = document.getElementById('offcanvasScrolling');
-  let bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
+async function offCanvasCallView(id) {
 
   let estadoOffCanvas = document.getElementById('span-estado');
   estadoOffCanvas.classList.contains('colorYellow') ? estadoOffCanvas.classList.remove('colorYellow') : "";
@@ -360,8 +394,33 @@ function offCanvasCallView() {
   let borrarBoton = document.getElementById('btn-enviar-datos-API');
   borrarBoton ? borrarBoton.remove() : "";
 
-  bsOffcanvas.show();
+  await datosOffCanvas(id);
 }
+
+const datosOffCanvas = async (id) => {
+
+  let myOffcanvas = document.getElementById('offcanvasScrolling');
+  let bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
+
+  const url =  `${base_url}/${controlador}/datoscanvas?id=${id}`;
+  let requestDatos = await fetch(url);
+
+  if (requestDatos.status === 200) {
+    
+    datos = await requestDatos.json();
+
+    document.querySelector("#idoffcanvas").value = id;
+    document.querySelector("#descripcion-offcanvas").value = datos.data.descripcion;
+    document.querySelector("#identificador-offcanvas").value = 6;
+    document.querySelector("#cuenta-cr-offcanvas").value = '4';
+    document.querySelector("#cuenta-db-offcanvas").value = '82';
+    document.querySelector("#monto-offcanvas").value = datos.data.monto;
+    document.querySelector("#id-asiento-offcanvas").value = datos.data.asiento_id;
+      
+    bsOffcanvas.show();
+    return datos;
+  }
+};
 
 function openModal(){
     

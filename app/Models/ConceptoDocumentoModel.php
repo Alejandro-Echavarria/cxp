@@ -14,7 +14,9 @@
         protected $allowedFields = ['concepto_id',
                                     'proveedor_id', 
                                     'documento_id',
-                                    'monto'];
+                                    'monto',
+                                    'asiento_id',
+                                    'estado'];
 
         protected $useTimestamps = false;
         protected $createdField  = '';

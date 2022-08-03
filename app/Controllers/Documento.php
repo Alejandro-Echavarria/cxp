@@ -162,6 +162,35 @@
             die();
         }
 
+        public function datoscanvas(){
+
+            $id = intval(strClean($this->request->getVar('id')));
+            if ($id > 0) {
+    
+                $arrData = $this->conceptoDocumento->select('cd.id,
+                                                             cd.documento_id,
+                                                             cd.monto,
+                                                             cd.asiento_id,
+                                                             cd.fecha,
+                                                             cd.estado,
+                                                             c.descripcion')
+                                                   ->from('concepto_documento cd')
+                                                   ->join('conceptos c', 'cd.concepto_id = c.id')
+                                                   ->where('cd.id', $id)
+                                                   ->first();
+                if (empty($arrData)) {
+                    
+                    $arrResponse = array('status' => false, 'msg' => 'Datos no encontrados');
+                }else{
+                    $arrResponse = array('status' => true, 'data' => $arrData);
+                }
+                
+                header('Content-Type: application/json');
+                echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+            }
+            die();
+        }
+
         public function editbalance() {
 
             if ($this->request->getMethod() == "post") {
@@ -222,7 +251,7 @@
                     
                 }
             }else{
-                $arrResponse = array("status" => false, "msg" => 'Error', 'validations' => $this->validation->getErrors() ? $this->validation->getErrors() : ""); 
+                $arrResponse = array("status" => false, "msg" => 'Error', 'validations' => $this->validation->getErrors() ? $this->validation->getErrors() : "");
             }
             echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
             die();
@@ -248,6 +277,39 @@
             }
             header('Content-Type: application/json');
             echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
+            die();
+        }
+
+        public function update() {
+
+            if ($this->request->getMethod() == "post") {
+
+                $id = intval(strClean($this->request->getVar('id')));
+                $idAsiento = intval(strClean($this->request->getVar('asiento_id')));
+                
+                if (empty($id || $idAsiento)) {
+                    
+                    $arrResponse = array("status" => false, "msg" => 'Datos incorrectos', 'validations' => '');
+                    echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+                    die();
+                }else{
+                    if ($id > 0) {
+                        
+                        $option = 1;
+                        $requestData = $this->conceptoDocumento->save(['id' => $id, 'asiento_id' => 1, 'estado' => 1]);
+                    }
+                }
+                if ($requestData > 0) {
+     
+                    if ($option == 1 ) {
+                        
+                        $arrResponse = array("status" => true, "msg" => 'Datos actualizados correctamente');
+                    }
+                }
+            }else{
+                $arrResponse = array("status" => false, "msg" => 'Error al momento de actualizar el documento', 'validations' => '');
+            }
+            echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
             die();
         }
     }
