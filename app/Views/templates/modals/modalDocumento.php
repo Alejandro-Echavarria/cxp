@@ -107,9 +107,8 @@
     </div>
 </div>
 
-
-
-<div style="z-index: 9999;" class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
+<!-- Offcanvas -->
+<div style="z-index: 1060;" class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1" id="offcanvasScrolling" aria-labelledby="offcanvasScrollingLabel">
     <div class="offcanvas-header color-primario">
         <h5 class="offcanvas-title fw-bold" id="offcanvasScrollingLabel">Detalles del documento</h5>
         <button type="button" class="btn-close details-color" data-bs-dismiss="offcanvas" aria-label="Close"></button>

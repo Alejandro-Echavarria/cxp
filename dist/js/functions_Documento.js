@@ -341,12 +341,63 @@ async function offCanvasCall(id) {
   let datos = await datosOffCanvas(id);
   const formAPI = document.querySelector(`#form${controlador}offcanvas`);
   const url =  `${base_url}/${controlador}/update`;
+  const urlContabilidad = 'https://service-accounting.herokuapp.com/api/AccountingEntry';
+
+  let dataAPI = [
+    {
+      'Period': datos.data.fecha,
+      'Currency' : 'USD',
+      'Detail' : [
+        {
+          'Amount' : datos.data.monto,
+          'LegerAccount' : 23,
+          'MovementType' : 'DB'
+        },
+        {
+          'Amount' : datos.data.monto,
+          'LegerAccount' : 4,
+          'MovementType' : 'CR'
+        }
+      ]
+    }
+  ];
   
   formAPI.onsubmit = async (e) => {
     e.preventDefault();
     
-    // return console.log(datos.data)
-    let sendData = await fetch(url, {
+    let APIContabilidad = await fetch(urlContabilidad,{
+      
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'token': 'cuentaxp004'
+      },
+      body: JSON.stringify(dataAPI)
+
+    })
+      .then(response => response.json())
+      .then(result => {
+
+        return message = result.errorMessage ? {'error': result.errorMessage} : {'id': result.responseList[0].id};
+      })
+      .catch(error => {
+        return error;
+      });
+
+    if (APIContabilidad.error) {
+      swalCustom.fire({
+        icon: "error",
+        title: "Error",
+        text: `${APIContabilidad.error}`,
+        confirmButtonText: "<i class='fa fa-fw fa-check-circle'></i> Entendido",
+        confirmButtonColor: "#aea322",
+      });
+      return false;
+    }
+
+    datos.data.asiento_id = APIContabilidad.id;
+
+    let dataBackEnd = await fetch(url, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -354,9 +405,9 @@ async function offCanvasCall(id) {
       body: JSON.stringify(datos.data)
     });
 
-    if (sendData.status === 200) {
+    if (dataBackEnd.status === 200) {
       
-      const objData = JSON.parse(await sendData.text());
+      const objData = JSON.parse(await dataBackEnd.text());
       if (objData.status) {
         
         swalCustom.fire({

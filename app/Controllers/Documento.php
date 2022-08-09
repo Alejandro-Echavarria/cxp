@@ -171,7 +171,7 @@
                                                              cd.documento_id,
                                                              cd.monto,
                                                              cd.asiento_id,
-                                                             cd.fecha,
+                                                 DATE_FORMAT(cd.fecha, "%Y-%m") as fecha,
                                                              cd.estado,
                                                              c.descripcion')
                                                    ->from('concepto_documento cd')
@@ -271,8 +271,9 @@
                                                    ->from('concepto_documento cd')
                                                    ->join('proveedores p', 'cd.proveedor_id = p.id')
                                                    ->join('conceptos c', 'cd.concepto_id = c.id')
-                                                   ->groupBy('cd.id')
                                                    ->where('cd.documento_id', $id)
+                                                   ->groupBy('cd.id')
+                                                   ->orderBy('cd.id', 'desc')
                                                    ->findAll();
             }
             header('Content-Type: application/json');
@@ -296,7 +297,7 @@
                     if ($id > 0) {
                         
                         $option = 1;
-                        $requestData = $this->conceptoDocumento->save(['id' => $id, 'asiento_id' => 1, 'estado' => 1]);
+                        $requestData = $this->conceptoDocumento->save(['id' => $id, 'asiento_id' => $idAsiento, 'estado' => 1]);
                     }
                 }
                 if ($requestData > 0) {
